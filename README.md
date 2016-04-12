@@ -1,2 +1,2 @@
-# joint_unsupervised_learning
-Source code for our CVPR on Joint Unsupervised Learning of Deep Representations and Image Clusters
+# joint-unsupervised-learning
+Source code for our CVPR paper on Joint Unsupervised Learning of Deep Representations and Image Clusters
