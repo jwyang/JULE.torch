@@ -55,10 +55,12 @@ If you find our code is useful in your researches, please consider citing:
    It may not work by runing the above command to install lua-knn. To make sure, please check the folder *torch/install/lib/lua/5.1* to see whether you can find libknn.so. Meanwhile, please check *torch/install/share/lua/5.1* to see whether you can find a folder knn with a file init.lua. If you cannot find them, you may need compile lua-rcoks manually. the steps are:
    ```bash
    $ mkdir build && cd build
-   $ cmake ..
+   $ cmake -D CUDA_TOOLKIT_ROOT_DIR=/your/cuda-toolkit/dir ..
    $ make
    ```
-   Then copy libknn.so to folder *torch/install/lib/lua/5.1*, and copy init.lua to folder *torch/install/share/lua/5.1/knn*.
+   You will see libknn.so in the same folder. Then copy it to folder *torch/install/lib/lua/5.1*, and copy init.lua to folder *torch/install/share/lua/5.1/knn*.
+
+Typically, you can run our code after installing the above two packages. Please let me know if error occurs.
 
 ### Train model
 
