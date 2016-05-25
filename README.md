@@ -5,7 +5,7 @@
 This project is a Torch implementation for our CVPR 2016 paper, which performs jointly unsupervised learning of deep CNN and image clusters. The intuition behind this is that better image representation will facilitate clustering, while better clustering results will help representation learning. Given a unlabeled dataset, it will iteratively learn CNN parameters unsupervisedly and cluster images.
 
 ### Disclaimer
-This is a torch version reimplementation to the code used in our CVPR paper. There is a slight difference between the code used to report the results in our paper. We will release the original Caffe version used in our CVPR 2016 paper as well.
+This is a torch version reimplementation to the code used in our CVPR paper. There is a slight difference between the code used to report the results in our paper. We will release the original Caffe version code used in our CVPR 2016 paper as well. Please stay tuned on this repository.
 
 ### License
 
