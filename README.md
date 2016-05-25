@@ -25,32 +25,32 @@ If you find our code is useful in your researches, please consider citing:
 
 1. [Torch](http://torch.ch/). Install Torch by:
 
-```bash
-$ curl -s https://raw.githubusercontent.com/torch/ezinstall/master/install-deps | bash
-$ git clone https://github.com/torch/distro.git ~/torch --recursive
-$ cd ~/torch; 
-$ ./install.sh      # and enter "yes" at the end to modify your bashrc
-$ source ~/.bashrc
-```
+   ```bash
+   $ curl -s https://raw.githubusercontent.com/torch/ezinstall/master/install-deps | bash
+   $ git clone https://github.com/torch/distro.git ~/torch --recursive
+   $ cd ~/torch; 
+   $ ./install.sh      # and enter "yes" at the end to modify your bashrc
+   $ source ~/.bashrc
+   ```
 
-After installing torch, you may also need install some packages using [LuaRocks](https://luarocks.org/):
+   After installing torch, you may also need install some packages using [LuaRocks](https://luarocks.org/):
 
-```bash
-$ luarocks install nn
-$ luarocks install image 
-```
+   ```bash
+   $ luarocks install nn
+   $ luarocks install image 
+   ```
 
-It is preferred to run the code on GPU. Thus you need to install cunn:
+   It is preferred to run the code on GPU. Thus you need to install cunn:
 
-```bash
-$ luarocks install cunn
-```
+   ```bash
+   $ luarocks install cunn
+   ```
 
 2. [lua-knn](https://github.com/Saulzar/lua-knn). It is used to compute the distance between neighbor samples. Go into the folder, and then compile the code as follows:
 
-```bash
-$ luarocks install knn-0-1.rockspec 
-```
+   ```bash
+   $ luarocks install knn-0-1.rockspec 
+   ```
 
 ### Run code
 
