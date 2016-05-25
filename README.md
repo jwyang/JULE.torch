@@ -52,6 +52,15 @@ If you find our code is useful in your researches, please consider citing:
    $ luarocks install knn-0-1.rockspec 
    ```
 
-### Run code
+### Train model
 
+It is very simple to run the code for training model. For example, if you want to train on *USPS* dataset, you can run:
 
+   ```bash
+   $ th train.lua -dataset USPS -eta 0.9
+   ```
+During training, you will see the normalize mutual information (NMI) for the clustering results.
+
+### Q & A
+
+You are welcome to send me message if you have any issue on running this code.
