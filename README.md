@@ -82,4 +82,4 @@ We upload six small datasets: COIL-20, USPS, MNIST-test, CMU-PIE, FRGC, UMist. T
 
 ### Q & A
 
-You are welcome to send me message if you have any issue on running this code.
+You are welcome to send me message if you have any issue on this code. My email is jw2yang at vt.edu.
