@@ -54,7 +54,7 @@ If you find our code is useful in your researches, please consider citing:
    
    It may not work by runing the above command to install lua-knn. To make sure, please check the folder *torch/install/lib/lua/5.1* to see whether you can find libknn.so. Meanwhile, please check *torch/install/share/lua/5.1* to see whether you can find a folder knn with a file init.lua. If you cannot find them, you may need compile lua-rcoks manually. the steps are:
    ```bash
-   $ mkdir build & cd build
+   $ mkdir build && cd build
    $ cmake ..
    $ make
    ```
