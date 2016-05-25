@@ -90,6 +90,6 @@ Typically, you can run our code after installing the above two packages. Please 
 
 We upload six small datasets: COIL-20, USPS, MNIST-test, CMU-PIE, FRGC, UMist. The other large datasets, COIL-100, MNIST-full and YTF can be found in my google drive.
 
-### Q & A
+### Q&A
 
-You are welcome to send me message if you have any issue on this code. My email is jw2yang at vt.edu.
+You are welcome to send message to (jw2yang at vt.edu) if you have any issue on this code.
