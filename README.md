@@ -44,15 +44,15 @@ $ luarocks install image
 
 It is preferred to run the code on GPU. Thus you need to install cunn:
 
-'''bash
+```bash
 $ luarocks install cunn
-'''
+```
 
 2. [lua-knn](https://github.com/Saulzar/lua-knn). It is used to compute the distance between neighbor samples. Go into the folder, and then compile the code as follows:
 
-'''bash
+```bash
 $ luarocks install knn-0-1.rockspec 
-'''
+```
 
 ### Run code
 
