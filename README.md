@@ -14,7 +14,7 @@ This code is released under the MIT License (refer to the LICENSE file for detai
 ### Citation
 If you find our code is useful in your researches, please consider citing:
 
-    @inproceedings{renNIPS15fasterrcnn,
+    @inproceedings{yangCVPR2016joint,
         Author = {Jianwei Yang and Devi Parikh and Dhruv Batra},
         Title = {Joint Unsupervised Learning of Deep Representations and Image Clusters},
         Booktitle = {IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
@@ -23,9 +23,7 @@ If you find our code is useful in your researches, please consider citing:
 
 ### Dependencies
 
-1. [Torch](http://torch.ch/). 
-
-Install Torch by:
+1. [Torch](http://torch.ch/). Install Torch by:
 
 ```bash
 $ curl -s https://raw.githubusercontent.com/torch/ezinstall/master/install-deps | bash
