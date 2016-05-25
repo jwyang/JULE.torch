@@ -59,7 +59,7 @@ It is very simple to run the code for training model. For example, if you want t
    ```bash
    $ th train.lua -dataset USPS -eta 0.9
    ```
-During training, you will see the normalize mutual information (NMI) for the clustering results.
+In the above command, eta is the unfolding rate. For face dataset, we recommand 0.2, while for other datasets, it is set to 0.9 to save training time. During training, you will see the normalize mutual information (NMI) for the clustering results.
 
 ### Q & A
 
