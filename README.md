@@ -54,7 +54,7 @@ If you find our code is useful in your researches, please consider citing:
 
 ### Train model
 
-It is very simple to run the code for training model. For example, if you want to train on *USPS* dataset, you can run:
+1. It is very simple to run the code for training model. For example, if you want to train on *USPS* dataset, you can run:
 
    ```bash
    $ th train.lua -dataset USPS -eta 0.9
@@ -62,13 +62,19 @@ It is very simple to run the code for training model. For example, if you want t
 
 **Note that it runs on fast mode by default.** In the above command, eta is the unfolding rate. For face dataset, we recommand 0.2, while for other datasets, it is set to 0.9 to save training time. During training, you will see the normalize mutual information (NMI) for the clustering results.
 
-Also, you can run multiple training process in parallel by:
+2. You can train multiple models in parallel by:
 
    ```bash
    $ th train.lua -dataset USPS -eta 0.9 -num_nets 5
    ```
-
 By this way, you weill get 5 different models, and thus 5 possible different results. Statistics such as mean and stddev can be computed on these results.
+
+3. You can also get the clustering performance when using raw image data and random CNN by
+   ```bash
+   $ th train.lua -dataset USPS -eta 0.9 -updateCNN 0
+   ```
+
+4. You can also change other hyper parameters for model training, such as K_s, K_c, number of epochs in each partial unrolled period, etc.
 
 ### Datasets
 
