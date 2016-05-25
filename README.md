@@ -60,7 +60,7 @@ It is very simple to run the code for training model. For example, if you want t
    $ th train.lua -dataset USPS -eta 0.9
    ```
 
-In the above command, eta is the unfolding rate. For face dataset, we recommand 0.2, while for other datasets, it is set to 0.9 to save training time. During training, you will see the normalize mutual information (NMI) for the clustering results.
+**Note that it runs on fast mode by default.** In the above command, eta is the unfolding rate. For face dataset, we recommand 0.2, while for other datasets, it is set to 0.9 to save training time. During training, you will see the normalize mutual information (NMI) for the clustering results.
 
 Also, you can run multiple training process in parallel by:
 
@@ -69,6 +69,10 @@ Also, you can run multiple training process in parallel by:
    ```
 
 By this way, you weill get 5 different models, and thus 5 possible different results. Statistics such as mean and stddev can be computed on these results.
+
+### Datasets
+
+We upload six small datasets: COIL-20, USPS, MNIST-test, CMU-PIE, FRGC, UMist. The other large datasets, COIL-100, MNIST-full and YTF can be found in my google drive.
 
 ### Q & A
 
