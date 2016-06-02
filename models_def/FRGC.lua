@@ -16,7 +16,7 @@ local net = nn.Sequential()
 -- building block
 local function ConvBNReLU(module, nInputPlane, nOutputPlane)
   module:add(backend.SpatialConvolution(nInputPlane, nOutputPlane, 5, 5, 1, 1, 0, 0))
-  module:add(nn.SpatialBatchNormalization(nOutputPlane,1))
+  module:add(nn.SpatialBatchNormalization(nOutputPlane))
   module:add(backend.ReLU(true))
   return module
 end
