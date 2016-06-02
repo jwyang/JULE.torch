@@ -15,7 +15,7 @@ This code is released under the MIT License (refer to the LICENSE file for detai
 If you find our code is useful in your researches, please consider citing:
 
     @inproceedings{yangCVPR2016joint,
-        Author = {Jianwei Yang and Devi Parikh and Dhruv Batra},
+        Author = {Yang, Jianwei and Parikh, Devi and Batra, Dhruv},
         Title = {Joint Unsupervised Learning of Deep Representations and Image Clusters},
         Booktitle = {IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
         Year = {2016}
