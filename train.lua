@@ -61,7 +61,7 @@ print(opt)
 print(c.blue '==>' ..' loading data')
 local myFile = hdf5.open('datasets/'..opt.dataset..'/data4torch.h5', 'r')
 local trainData_data  = myFile:read('data'):all():float()
-local trainData_label = myFile:read('labels'):all():double()
+local trainData_label = myFile:read('labels'):all():float()
 
 -- centralize training data
 if opt.centralize_input == 1 then
@@ -84,7 +84,8 @@ local function NetInit(net)
 		end
 	end
 	-- have to do for both backends
-	init'cudnn.SpatialConvolution'
+	init'cunn.SpatialConvolution'	
+	init'cudnn.SpatialConvolution'	
 	init'nn.SpatialConvolution'	
 	init'nn.Linear'	
 end
@@ -139,8 +140,8 @@ local target_nclusters_table = torch.LongTensor(num_networks):zero()
 local epoch_reset_labels     = torch.LongTensor(num_networks):zero()
 for i = 1, num_networks do
 	local model = nn.Sequential()
-	model:add(nn.Copy('torch.FloatTensor','torch.CudaTensor'):cuda())
-	model:add(dofile('models_def/'..opt.dataset..'.lua'):cuda())
+	model:add(nn.Copy('torch.FloatTensor','torch.CudaTensor'))
+	model:add(dofile('models_def/'..opt.dataset..'.lua')):cuda()
 	model:get(1).updateGradInput = function(input) return end
 	table.insert(network_table, model)
     NetInit(network_table[i])
@@ -295,6 +296,10 @@ function merge_label_final()
 	for i = 1, #network_table do
 	    features = extFeature(i)	
 
+		local myFile = hdf5.open('results/feature_pre_'..tostring(epoch)..'_'..tostring(i)..'.h5', 'w')
+		myFile:write('feature', features:float())
+		myFile:close()	
+
 		-- centralize		
 		if opt.centralize_feature == 1 then
 			local feat_mean = torch.mean(features, 1)
@@ -347,9 +352,9 @@ function organize_samples(X, y, v)
     local A = torch.CudaTensor(num_triplet, X:size(2)):zero()
     local B = torch.CudaTensor(num_triplet, X:size(2)):zero()
     local C = torch.CudaTensor(num_triplet, X:size(2)):zero()
-    local A_ind = torch.LongTensor(num_triplet, 1):zero()
-    local B_ind = torch.LongTensor(num_triplet, 1):zero()
-    local C_ind = torch.LongTensor(num_triplet, 1):zero()    
+    local A_ind = torch.LongTensor(num_triplet):zero()
+    local B_ind = torch.LongTensor(num_triplet):zero()
+    local C_ind = torch.LongTensor(num_triplet):zero()    
     local id_triplet = 1
     for i = 1, nclusters do
     	if #(y_table[i]) > 1 then
@@ -378,7 +383,6 @@ function organize_samples(X, y, v)
     end    
 
     --print("id_triplet:", id_triplet)
-    --print("num_triplet: ", num_triplet)
     A:indexCopy(1, torch.range(1, num_triplet):long(), X:index(1, A_ind))
     B:indexCopy(1, torch.range(1, num_triplet):long(), X:index(1, B_ind))
     C:indexCopy(1, torch.range(1, num_triplet):long(), X:index(1, C_ind))
@@ -452,6 +456,9 @@ function evalPerf()
 	print(c.blue '==>'.." testing")
 	-- local bs = 100
 	for i = 1, #network_table do		
+		local myFile = hdf5.open('results/label_pre_'..tostring(epoch)..'_'..tostring(i)..'.h5', 'w')
+		myFile:write('label', label_pre_tensor_table[i]:long())
+		myFile:close()		
 	    print('NMI: ' , evaluate.NMI(label_gt_table_table[i], label_pre_table_table[i], label_pre_tensor_table[i]:size(1)))
 	end
 end
