@@ -90,6 +90,10 @@ Typically, you can run our code after installing the above two packages. Please 
 
 We upload six small datasets: COIL-20, USPS, MNIST-test, CMU-PIE, FRGC, UMist. The other large datasets, COIL-100, MNIST-full and YTF can be found in my google drive [here](https://drive.google.com/folderview?id=0B9J-9A2jotGRT25vSDhUWTQxVWs&usp=sharing).
 
+### Extensions
+
+1. One extension of the proposed approach is to visualize high-dimensional data in low dimension, such as 2D. 3D. Please refer to the [repo](https://github.com/jwyang/jule-visualize) for detail.
+
 ### Q&A
 
 You are welcome to send message to (jw2yang at vt.edu) if you have any issue on this code.
