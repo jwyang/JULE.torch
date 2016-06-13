@@ -1,4 +1,4 @@
-# Joint Unsupervised Learning (JULEAR) of Deep Representations and Image Clusters.
+# Joint Unsupervised Learning (JULE) of Deep Representations and Image Clusters.
 
 ### Overview
 
