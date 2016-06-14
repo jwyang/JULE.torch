@@ -131,6 +131,7 @@ local num_networks           = opt.num_nets
 local network_table          = {}
 local parameters_table       = {}
 local gradParameters_table   = {}
+local optim_state_table      = {}
 local label_gt_table_table   = {}
 local label_gt_tensor_table  = {}
 local label_pre_table_table  = {}
@@ -147,7 +148,8 @@ for i = 1, num_networks do
     NetInit(network_table[i])
     local parameter, gradParameter = network_table[i]:getParameters()
     table.insert(parameters_table, parameter)
-    table.insert(gradParameters_table, gradParameter)    
+    table.insert(gradParameters_table, gradParameter)
+    table.insert(optim_state_table, {}) 
 	print(network_table[i])
 	table.insert(label_pre_table_table, {})	
 	table.insert(label_pre_tensor_table, {})
@@ -323,7 +325,7 @@ end
 ----------------------------------
 ------- organize samples ---------
 ----------------------------------
-function organize_samples(X, y, v)
+function organize_samples(X, y)
 	-- X: input features
 	-- y: labels for input features
 	local num_s = X:size(1)
@@ -424,7 +426,7 @@ function updateCNN()
 	    	    if x ~= parameters_table[i] then parameters_table[i]:copy(x) end
 	    	    gradParameters_table[i]:zero()	    	    
 	    	    local outputs = network_table[i]:forward(inputs)
-	    	    local triplets, triplets_ind = organize_samples(outputs, targets:float(), v)	    	    
+	    	    local triplets, triplets_ind = organize_samples(outputs, targets:float())	    	    
 	    	    local f = 0
 				if triplets ~= nil then
 				    f = criterion_triplet:forward(triplets)
@@ -438,7 +440,7 @@ function updateCNN()
 		        end
 		    	return f,gradParameters_table[i]
 		    end
-		    optim.sgd(feval, parameters_table[i], optimState)    
+		    optim.sgd(feval, parameters_table[i], optimState, optim_state_table[i])      
 		end
 	end
 	epoch = epoch + 1
