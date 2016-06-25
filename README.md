@@ -90,6 +90,12 @@ Typically, you can run our code after installing the above two packages. Please 
 
 We upload six small datasets: COIL-20, USPS, MNIST-test, CMU-PIE, FRGC, UMist. The other large datasets, COIL-100, MNIST-full and YTF can be found in my google drive [here](https://drive.google.com/folderview?id=0B9J-9A2jotGRT25vSDhUWTQxVWs&usp=sharing).
 
+### Qualitative Results
+
+### Compared Approaches
+
+We upload the code for the compared approaches in matlab folder. Please refer to the original paper for details and cite them properly. In this foler, we also attach the evaluation code for two metric: normalized mutual information (NMI) and clustering accuracy (AC).
+
 ### Extensions
 
 1. **Data Visualization**: With a few modifications, the proposed approach can be used to visualize high-dimensional data in low dimension, e.g., 2D, 3D. As shown in our paper, the visualization performance beats [parametric t-SNE](https://lvdmaaten.github.io/tsne/) on MNIST dataset. Please refer to the [repo](https://github.com/jwyang/jule-visualize) for detail. More experimental results on both image data and other modality data will come soon.
