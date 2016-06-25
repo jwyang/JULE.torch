@@ -1,0 +1,1 @@
+Xinlei Chen, Deng Cai, "Large Scale Spectral Clustering with Landmark-Based Representation," AAAI 2011.
