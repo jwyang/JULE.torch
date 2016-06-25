@@ -70,7 +70,7 @@ Typically, you can run our code after installing the above two packages. Please 
    $ th train.lua -dataset USPS -eta 0.9
    ```
 
-   **Note that it runs on fast mode by default.** In the above command, eta is the unfolding rate. For face dataset, we recommand 0.2, while for other datasets, it is set to 0.9 to save training time. During training, you will see the normalize mutual information (NMI) for the clustering results.
+   **Note that it runs on fast mode by default.** You can change it to regular mode by setting use_fast be zero. In the above command, eta is the unfolding rate. For face dataset, we recommand 0.2, while for other datasets, it is set to 0.9 to save training time. During training, you will see the normalize mutual information (NMI) for the clustering results.
 
 2. You can train multiple models in parallel by:
 
