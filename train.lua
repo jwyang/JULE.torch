@@ -205,7 +205,7 @@ function updateLabels(features, label_pre, target_clusters, iter)
 	    label_pre = agg_clustering.init(ind)
 	    return label_pre
 	end
-    print("nclusters: ", getnClusters(label_pre))
+	print("nclusters: ", getnClusters(label_pre))
 	local A_us, A_s, label_pre = affinity.compute4cluster(features, W, label_pre, getnClusters(label_pre), target_clusters)
 	print("nclusters: ", getnClusters(label_pre))
 	local nClusters = getnClusters(label_pre)
