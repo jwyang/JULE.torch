@@ -296,9 +296,9 @@ function merge_label_final()
 	local feature
 	for i = 1, #network_table do
 		features = extFeature(i)
-		local myFile = hdf5.open('results/feature_pre_'..tostring(epoch)..'_'..tostring(i)..'.h5', 'w')
-		myFile:write('feature', features:float())
-		myFile:close()
+		--local myFile = hdf5.open('results/feature_pre_'..tostring(epoch)..'_'..tostring(i)..'.h5', 'w')
+		--myFile:write('feature', features:float())
+		--myFile:close()
 
 		-- centralize
 		if opt.centralize_feature == 1 then
@@ -454,9 +454,9 @@ function evalPerf()
 	print(c.blue '==>'.." testing")
 	-- local bs = 100
 	for i = 1, #network_table do
-		local myFile = hdf5.open('results/label_pre_'..tostring(epoch)..'_'..tostring(i)..'.h5', 'w')
-		myFile:write('label', label_pre_tensor_table[i]:long())
-		myFile:close()
+		--local myFile = hdf5.open('results/label_pre_'..tostring(epoch)..'_'..tostring(i)..'.h5', 'w')
+		--myFile:write('label', label_pre_tensor_table[i]:long())
+		--myFile:close()
 	  print('NMI: ' , evaluate.NMI(label_gt_table_table[i], label_pre_table_table[i], label_pre_tensor_table[i]:size(1)))
 	end
 end
