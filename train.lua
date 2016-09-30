@@ -84,10 +84,10 @@ local function NetInit(net)
 		end
 	end
 	-- have to do for both backends
-	init'cunn.SpatialConvolution'	
-	init'cudnn.SpatialConvolution'	
-	init'nn.SpatialConvolution'	
-	init'nn.Linear'	
+	init'cunn.SpatialConvolution'
+	init'cudnn.SpatialConvolution'
+	init'nn.SpatialConvolution'
+	init'nn.Linear'
 end
 
 -----------------------------------------
@@ -97,29 +97,29 @@ function cvt2TabelLabels(labels)
 	-- derive the number of unique labels
 	-- print({labels})
 	labels_sorted, idx_sorted = torch.sort(labels)
-    local nclasses = 1
-    local label = labels_sorted[1]
-    local labels_from_one = torch.LongTensor(labels:size(1)):zero()
-    -- print("idx_sorted: ", idx_sorted[1])
-    labels_from_one[idx_sorted[1]] = nclasses
-    for i = 2, labels_sorted:size(1) do    
-	    if labels_sorted[i] ~= label then
-		    label = labels_sorted[i]
-	        nclasses = nclasses + 1
-        end
-        labels_from_one[idx_sorted[i]] = nclasses
+  local nclasses = 1
+  local label = labels_sorted[1]
+  local labels_from_one = torch.LongTensor(labels:size(1)):zero()
+  -- print("idx_sorted: ", idx_sorted[1])
+  labels_from_one[idx_sorted[1]] = nclasses
+  for i = 2, labels_sorted:size(1) do
+	  if labels_sorted[i] ~= label then
+			label = labels_sorted[i]
+			nclasses = nclasses + 1
+		end
+		labels_from_one[idx_sorted[i]] = nclasses
 	end
-    -- print('nclasses: ', nclasses)
-    local labels_tb = {}
-    for i = 1, nclasses do
-        table.insert(labels_tb, {})
-    end
-    -- print(features:size(1))
-    for i = 1, labels:size(1) do
-        -- table.insert(labels_tb[labels[i]], i)
-        table.insert(labels_tb[labels_from_one[i]], i)
-    end
-    return labels_tb
+  -- print('nclasses: ', nclasses)
+  local labels_tb = {}
+  for i = 1, nclasses do
+		table.insert(labels_tb, {})
+	end
+	-- print(features:size(1))
+	for i = 1, labels:size(1) do
+		-- table.insert(labels_tb[labels[i]], i)
+		table.insert(labels_tb[labels_from_one[i]], i)
+	end
+	return labels_tb
 end
 
 
@@ -149,12 +149,12 @@ for i = 1, num_networks do
     local parameter, gradParameter = network_table[i]:getParameters()
     table.insert(parameters_table, parameter)
     table.insert(gradParameters_table, gradParameter)
-    table.insert(optim_state_table, {}) 
+    table.insert(optim_state_table, {})
 	print(network_table[i])
-	table.insert(label_pre_table_table, {})	
+	table.insert(label_pre_table_table, {})
 	table.insert(label_pre_tensor_table, {})
 	table.insert(label_gt_table_table, {})
-	table.insert(label_gt_tensor_table, {})	
+	table.insert(label_gt_tensor_table, {})
 end
 
 for i = 1, num_networks do
@@ -198,7 +198,7 @@ end
 ---------------------------------------------
 function updateLabels(features, label_pre, target_clusters, iter)
 	print("compute affinity, ", features:size())
-	local d, ind, W = affinity.compute(features, opt.K_s) --, W, L, sigma_l 
+	local d, ind, W = affinity.compute(features, opt.K_s) --, W, L, sigma_l
 	-- sigma = sigma_l
 	if iter == 0 then
 	    print("initialize clusters...")
@@ -220,9 +220,9 @@ function updateLabels(features, label_pre, target_clusters, iter)
 	end
 	if iterations <= 0 then
 	  	return label_pre
-	end  
+	end
 	label_pre = agg_clustering.run(W, A_us, A_s, label_pre, iterations, opt.K_c, opt.use_fast)
-	return label_pre  
+	return label_pre
 end
 
 ----------------------------------------------------
@@ -230,14 +230,14 @@ end
 ----------------------------------------------------
 function extFeature(id_net)
 	-- extract features from initial neural network
-    network_table[id_net]:forward(trainData_data:index(1, torch.LongTensor{1, 2}))
-    local dim_feature = network_table[id_net]:get(2):get(network_table[id_net]:get(2):size(1)).output:size(2)
-    local features = torch.CudaTensor(trainData_data:size(1), dim_feature):zero()
-  	local indices = torch.range(1, trainData_data:size(1)):long():split(opt.batchSize)   
-	for t,v in ipairs(indices) do  
-	    local inputs = trainData_data:index(1, v)
-	    local outputs = network_table[id_net]:forward(inputs)
-	    features:indexCopy(1, v, network_table[id_net]:get(2):get(network_table[id_net]:get(2):size(1)).output)
+  network_table[id_net]:forward(trainData_data:index(1, torch.LongTensor{1, 2}))
+  local dim_feature = network_table[id_net]:get(2):get(network_table[id_net]:get(2):size(1)).output:size(2)
+  local features = torch.CudaTensor(trainData_data:size(1), dim_feature):zero()
+  local indices = torch.range(1, trainData_data:size(1)):long():split(opt.batchSize)
+	for t,v in ipairs(indices) do
+		local inputs = trainData_data:index(1, v)
+		local outputs = network_table[id_net]:forward(inputs)
+		features:indexCopy(1, v, network_table[id_net]:get(2):get(network_table[id_net]:get(2):size(1)).output)
 	end
 	features = features:float()
 	return features
@@ -259,15 +259,46 @@ end
 ----------------------------------------
 --- merging labels during training -----
 ----------------------------------------
-function merge_label()	
+function merge_label()
 	for i = 1, #network_table do
 		local feature
 		if epoch_reset_labels[i] == 0 or opt.updateCNN == 0 then
-		    features = torch.Tensor(trainData_data:size()):copy(trainData_data):float()
-		    features:resize(trainData_data:size(1), trainData_data:size(2) * trainData_data:size(3) * trainData_data:size(4))		 
+		  features = torch.Tensor(trainData_data:size()):copy(trainData_data):float()
+		  features:resize(trainData_data:size(1), trainData_data:size(2) * trainData_data:size(3) * trainData_data:size(4))
 		else
-	        features = extFeature(i)
+			features = extFeature(i)
 		end
+		-- centralize
+		if opt.centralize_feature == 1 then
+			local feat_mean = torch.mean(features, 1)
+			local xfeat_mean = feat_mean:new():view(1,features:size(2)):expand(features:size(1), features:size(2))
+			features:add(-1, xfeat_mean)
+		end
+
+		-- normalize
+		if opt.normalize == 1 then
+			features:renorm(features, 2, 1, 1)
+		end
+
+	  print("feature dims: ", features:size())
+	  label_pre_table_table[i] = updateLabels(features, label_pre_table_table[i], target_nclusters_table[i], epoch_reset_labels[i])
+	  epoch_reset_labels[i] = epoch_reset_labels[i] + 1
+	  nclusters = #label_pre_table_table[i]
+	  print("nclusters: ", nclusters)
+    label_pre_tensor_table[i] = cvt2TensorLabels(label_pre_table_table[i], 1, trainData_data:size(1))
+	end
+end
+
+------------------------------------------
+----- Merging labels at final stage ------
+------------------------------------------
+function merge_label_final()
+	local feature
+	for i = 1, #network_table do
+		features = extFeature(i)
+		local myFile = hdf5.open('results/feature_pre_'..tostring(epoch)..'_'..tostring(i)..'.h5', 'w')
+		myFile:write('feature', features:float())
+		myFile:close()
 
 		-- centralize
 		if opt.centralize_feature == 1 then
@@ -281,44 +312,11 @@ function merge_label()
 			features:renorm(features, 2, 1, 1)
 		end
 
-	    print("feature dims: ", features:size())
-	    label_pre_table_table[i] = updateLabels(features, label_pre_table_table[i], target_nclusters_table[i], epoch_reset_labels[i])	  
-	    epoch_reset_labels[i] = epoch_reset_labels[i] + 1  
-	    nclusters = #label_pre_table_table[i]
-	    print("nclusters: ", nclusters)	    
-    	label_pre_tensor_table[i] = cvt2TensorLabels(label_pre_table_table[i], 1, trainData_data:size(1))    	
-	end	
-end
-
-------------------------------------------
------ Merging labels at final stage ------
-------------------------------------------
-function merge_label_final()
-	local feature
-	for i = 1, #network_table do
-	    features = extFeature(i)	
-
-		local myFile = hdf5.open('results/feature_pre_'..tostring(epoch)..'_'..tostring(i)..'.h5', 'w')
-		myFile:write('feature', features:float())
-		myFile:close()	
-
-		-- centralize		
-		if opt.centralize_feature == 1 then
-			local feat_mean = torch.mean(features, 1)
-			local xfeat_mean = feat_mean:new():view(1,features:size(2)):expand(features:size(1), features:size(2))
-			features:add(-1, xfeat_mean)
-		end
-
-		-- normalize
-		if opt.normalize == 1 then
-		    features:renorm(features, 2, 1, 1)
-		end
-
-	    label_pre_table_table[i] = updateLabels(features, label_pre_table_table[i], target_nclusters_table[i], epoch_reset_labels[i])	  
-	    epoch_reset_labels[i] = epoch_reset_labels[i] + 1  
-	    nclusters = #label_pre_table_table[i]
-	    print("nclusters: ", nclusters)	    
-    	label_pre_tensor_table[i] = cvt2TensorLabels(label_pre_table_table[i], 1, trainData_data:size(1))    	
+		label_pre_table_table[i] = updateLabels(features, label_pre_table_table[i], target_nclusters_table[i], epoch_reset_labels[i])
+	  epoch_reset_labels[i] = epoch_reset_labels[i] + 1
+	  nclusters = #label_pre_table_table[i]
+	  print("nclusters: ", nclusters)
+    label_pre_tensor_table[i] = cvt2TensorLabels(label_pre_table_table[i], 1, trainData_data:size(1))
 	end
 end
 
@@ -329,26 +327,25 @@ function organize_samples(X, y)
 	-- X: input features
 	-- y: labels for input features
 	local num_s = X:size(1)
-    local y_table = cvt2TabelLabels(y)   
-    -- print(y_table)
-    local nclusters = #y_table
-    if nclusters == 1 then
-    	return
-    else
+  local y_table = cvt2TabelLabels(y)
+  -- print(y_table)
+  local nclusters = #y_table
+  if nclusters == 1 then
+  	return
+  else
     -- compute the size of triplet samples
     local num_neg_sampling = opt.num_nsampling
     if nclusters <= opt.num_nsampling then
-	    local num_neg_sampling = nclusters - 1
-	end
-
+		  local num_neg_sampling = nclusters - 1
+	  end
     local num_triplet = 0
     for i = 1, nclusters do
-    	if #(y_table[i]) > 1 then
-    		num_triplet = num_triplet + (#(y_table[i]) * (#(y_table[i]) - 1)) * num_neg_sampling / 2
-    	end
+  	  if #(y_table[i]) > 1 then
+  		  num_triplet = num_triplet + (#(y_table[i]) * (#(y_table[i]) - 1)) * num_neg_sampling / 2
+  	  end
     end
     if num_triplet == 0 then
-		return
+		  return
     end
     -- print('num_triplet: ', num_triplet)
     local A = torch.CudaTensor(num_triplet, X:size(2)):zero()
@@ -356,34 +353,33 @@ function organize_samples(X, y)
     local C = torch.CudaTensor(num_triplet, X:size(2)):zero()
     local A_ind = torch.LongTensor(num_triplet):zero()
     local B_ind = torch.LongTensor(num_triplet):zero()
-    local C_ind = torch.LongTensor(num_triplet):zero()    
+    local C_ind = torch.LongTensor(num_triplet):zero()
     local id_triplet = 1
     for i = 1, nclusters do
-    	if #(y_table[i]) > 1 then
-	    	for m = 1, #(y_table[i]) do
-	    		for n = m + 1, #(y_table[i]) do
+      if #(y_table[i]) > 1 then
+	  	  for m = 1, #(y_table[i]) do
+	    	  for n = m + 1, #(y_table[i]) do
 				    if m ~= n then
-    				    local is_choosed = torch.ShortTensor(num_s):zero()
-    				    while 1 do
-    				    	local rdn = torch.rand(1)
-    				    	local id_s = torch.ceil(rdn[1] * num_s)
-    				    	if is_choosed[id_s] == 0 and y[id_s] ~= y[y_table[i][m]] then
-		    				    A_ind[id_triplet] = y_table[i][m]
-		    				    B_ind[id_triplet] = y_table[i][n]
-    				    		C_ind[id_triplet] = id_s
-    				    		is_choosed[id_s] = 1
-    				    		id_triplet = id_triplet + 1
-    				    	end
-					    	if (id_triplet) % num_neg_sampling == 1 then
-    				    		break
-    				    	end  
+						  local is_choosed = torch.ShortTensor(num_s):zero()
+						  while 1 do
+							  local rdn = torch.rand(1)
+    				    local id_s = torch.ceil(rdn[1] * num_s)
+    				    if is_choosed[id_s] == 0 and y[id_s] ~= y[y_table[i][m]] then
+		    			    A_ind[id_triplet] = y_table[i][m]
+		    			    B_ind[id_triplet] = y_table[i][n]
+    				  	  C_ind[id_triplet] = id_s
+    				  	  is_choosed[id_s] = 1
+    				  	  id_triplet = id_triplet + 1
     				    end
-			    	end
+					  	  if (id_triplet) % num_neg_sampling == 1 then
+    				  	  break
+    				    end
+    				  end
+			      end
 			    end
-			end
-    	end
-    end    
-
+			  end
+      end
+    end
     --print("id_triplet:", id_triplet)
     A:indexCopy(1, torch.range(1, num_triplet):long(), X:index(1, A_ind))
     B:indexCopy(1, torch.range(1, num_triplet):long(), X:index(1, B_ind))
@@ -409,38 +405,38 @@ function updateCNN()
 	for i = 1, #network_table do
 		network_table[i]:training()
 	end
-	epoch = epoch or 1	
+	epoch = epoch or 1
 	-- drop learning rate every "epoch_step" epochs
 	print(c.blue '==>'.." online epoch # " .. epoch .. ' [batchSize = ' .. opt.batchSize .. ']'..' [learningRate = ' .. optimState.learningRate .. ']')
 	local targets = torch.CudaTensor(opt.batchSize)
 	local indices = torch.randperm(trainData_data:size(1)):long():split(opt.batchSize)
-    for t,v in ipairs(indices) do
-    	local iter = epoch * (#indices) + t - 1
-    	optimState.learningRate = opt.learningRate * torch.pow(1 + opt.gamma_lr * iter, - opt.power_lr)
-    	targets = torch.CudaTensor(v:size(1))	    
-	    -- xlua.progress(t, #indices)
-	    local inputs = trainData_data:index(1,v)
-	    for i = 1, #network_table do		 
-		    targets:copy(label_pre_tensor_table[i]:index(1,v))   
-	    	local feval = function(x)
-	    	    if x ~= parameters_table[i] then parameters_table[i]:copy(x) end
-	    	    gradParameters_table[i]:zero()	    	    
-	    	    local outputs = network_table[i]:forward(inputs)
-	    	    local triplets, triplets_ind = organize_samples(outputs, targets:float())	    	    
-	    	    local f = 0
+  for t,v in ipairs(indices) do
+		local iter = epoch * (#indices) + t - 1
+		optimState.learningRate = opt.learningRate * torch.pow(1 + opt.gamma_lr * iter, - opt.power_lr)
+    targets = torch.CudaTensor(v:size(1))
+	  -- xlua.progress(t, #indices)
+	  local inputs = trainData_data:index(1,v)
+	  for i = 1, #network_table do
+		  targets:copy(label_pre_tensor_table[i]:index(1,v))
+	    local feval = function(x)
+				if x ~= parameters_table[i] then parameters_table[i]:copy(x) end
+				gradParameters_table[i]:zero()
+	    	local outputs = network_table[i]:forward(inputs)
+	    	local triplets, triplets_ind = organize_samples(outputs, targets:float())
+	    	local f = 0
 				if triplets ~= nil then
-				    f = criterion_triplet:forward(triplets)
-				    local df_dtriplets = criterion_triplet:backward(triplets)       
+				  f = criterion_triplet:forward(triplets)
+				  local df_dtriplets = criterion_triplet:backward(triplets)
 					local df_do = torch.CudaTensor():rand(outputs:size()):zero()
 					df_do = cvt2df_do(df_do, df_dtriplets, triplets_ind)
 					network_table[i]:backward(inputs, df_do)
-				end		    	
-		    	if t % 10 == 0 then
-			        print("loss: ", f)
-		        end
-		    	return f,gradParameters_table[i]
-		    end
-		    optim.sgd(feval, parameters_table[i], optimState, optim_state_table[i])      
+				end
+		    if t % 10 == 0 then
+					print("loss: ", f)
+				end
+		    return f,gradParameters_table[i]
+			end
+			optim.sgd(feval, parameters_table[i], optimState, optim_state_table[i])
 		end
 	end
 	epoch = epoch + 1
@@ -454,14 +450,14 @@ function evalPerf()
 	local nnsm = nn.SoftMax()
 	for i = 1, #network_table do
 		network_table[i]:evaluate()
-	end	
+	end
 	print(c.blue '==>'.." testing")
 	-- local bs = 100
-	for i = 1, #network_table do		
+	for i = 1, #network_table do
 		local myFile = hdf5.open('results/label_pre_'..tostring(epoch)..'_'..tostring(i)..'.h5', 'w')
 		myFile:write('label', label_pre_tensor_table[i]:long())
-		myFile:close()		
-	    print('NMI: ' , evaluate.NMI(label_gt_table_table[i], label_pre_table_table[i], label_pre_tensor_table[i]:size(1)))
+		myFile:close()
+	  print('NMI: ' , evaluate.NMI(label_gt_table_table[i], label_pre_table_table[i], label_pre_tensor_table[i]:size(1)))
 	end
 end
 
@@ -483,20 +479,20 @@ optimState.learningRate = opt.learningRate
 -- train multi-attribute discovery models
 for n = 1, opt.epoch_rnn do
 	for i = 0, opt.epoch_max do
-		if i % opt.epoch_pp == 0 then			
+		if i % opt.epoch_pp == 0 then
 			merge_label()
 			evalPerf()    -- test mad models: show the clusters discovered by different model
 			if is_allfinished() then
 				break
 			end
-		end 
+		end
 		if opt.updateCNN == 1 then
 			updateCNN()       -- train mad models: train models with information-maximization objective while information minimization across models
 		end
 	end
 
 	epoch_reset_labels:zero()
-    while 1 do		
+  while 1 do
 		merge_label_final()
 		evalPerf()    -- test mad models: show the clusters discovered by different model
 		if is_allfinished() then
