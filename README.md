@@ -89,9 +89,9 @@ We upload six small datasets: COIL-20, USPS, MNIST-test, CMU-PIE, FRGC, UMist. T
 
 Alternatively, you can train the model on your own dataset. As preparations, you need:
 
-1. Create a hdf5 file with size of NxCxHxW, where N is the total number of images, C is the number of channels, H is the height of image, and W the width of image. Then move it in datasets/*dataset_name*/data4torch.h5
+1. Create a hdf5 file with size of NxCxHxW, where N is the total number of images, C is the number of channels, H is the height of image, and W the width of image. Then move it to datasets/*dataset_name*/data4torch.h5
 
-2. Create a lua file to specify the network architecture for your dataset. Put it in models_def/*dataset_name*.lua.
+2. Create a lua file to define the network architecture for your dataset. Put it in models_def/*dataset_name*.lua.
 
 3. Afterwards, you can run train.lua by specifying the dataset name as your own dataset. That's it!
 
