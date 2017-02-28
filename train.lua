@@ -347,7 +347,6 @@ function organize_samples(X, y)
     if num_triplet == 0 then
       return
     end
-    -- print('num_triplet: ', num_triplet)
     local A = torch.CudaTensor(num_triplet, X:size(2)):zero()
     local B = torch.CudaTensor(num_triplet, X:size(2)):zero()
     local C = torch.CudaTensor(num_triplet, X:size(2)):zero()
@@ -359,28 +358,26 @@ function organize_samples(X, y)
       if #(y_table[i]) > 1 then
         for m = 1, #(y_table[i]) do
 	  for n = m + 1, #(y_table[i]) do
-            if m ~= n then
-	      local is_choosed = torch.ShortTensor(num_s):zero()
-	        while 1 do
-		  local rdn = torch.rand(1)
-    		  local id_s = torch.ceil(rdn[1] * num_s)
-    		  if is_choosed[id_s] == 0 and y[id_s] ~= y[y_table[i][m]] then
-		    A_ind[id_triplet] = y_table[i][m]
-		    B_ind[id_triplet] = y_table[i][n]
-    		    C_ind[id_triplet] = id_s
-    		    is_choosed[id_s] = 1
-    	            id_triplet = id_triplet + 1
-    		  end
-		  if (id_triplet) % num_neg_sampling == 1 then
-    		    break
-    		  end
-    		end
-	      end
-	    end
-         end
+	    local is_choosed = torch.ShortTensor(num_s):zero()
+	    while 1 do
+	      local rdn = torch.rand(1)
+    	      local id_s = torch.ceil(rdn[1] * num_s)
+              local id_t = y_table[i][m]
+    	      if is_choosed[id_s] == 0 and y[id_s] ~= y[id_t] then
+		A_ind[id_triplet] = y_table[i][m]
+		B_ind[id_triplet] = y_table[i][n]
+    		C_ind[id_triplet] = id_s
+    		is_choosed[id_s] = 1
+    	        id_triplet = id_triplet + 1
+    	      end
+	      if torch.sum(is_choosed) == num_neg_sampling then
+    		break
+    	      end
+    	    end
+	  end
+        end
       end
     end
-    --print("id_triplet:", id_triplet)
     A:indexCopy(1, torch.range(1, num_triplet):long(), X:index(1, A_ind))
     B:indexCopy(1, torch.range(1, num_triplet):long(), X:index(1, B_ind))
     C:indexCopy(1, torch.range(1, num_triplet):long(), X:index(1, C_ind))
