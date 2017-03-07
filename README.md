@@ -46,14 +46,11 @@ If you find our code is useful in your researches, please consider citing:
    $ luarocks install cunn
    ```
 
-2. [lua-knn](https://github.com/Saulzar/lua-knn). It is used to compute the distance between neighbor samples. Go into the folder, and then compile it manually. The steps are:
+2. [lua-knn](https://github.com/Saulzar/lua-knn). It is used to compute the distance between neighbor samples. Go into the folder, and then compile it with:
 
    ```bash
-   $ mkdir build && cd build
-   $ cmake -D CUDA_TOOLKIT_ROOT_DIR=/your/cuda-toolkit/dir ..
-   $ make
+   $ luarocks make
    ```
-   You will see libknn.so in the same folder. Then copy it to folder *torch/install/lib/lua/5.1*, and copy init.lua to folder *torch/install/share/lua/5.1/knn*. Make a new folder knn if you cannot find it.
 
 Typically, you can run our code after installing the above two packages. Please let me know if error occurs.
 
