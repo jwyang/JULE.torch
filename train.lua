@@ -336,7 +336,9 @@ function organize_samples(X, y)
     -- compute the size of triplet samples
     local num_neg_sampling = opt.num_nsampling
     if nclusters <= opt.num_nsampling then
-      local num_neg_sampling = nclusters - 1
+      --local num_neg_sampling = nclusters - 1	--> This line will lead to infinite iteration afterwards, if
+                                                --> nclusters <= opt.num_nsampling. Occurs often when batchSize is relatively small
+      num_neg_sampling = nclusters - 1
     end
     local num_triplet = 0
     for i = 1, nclusters do
