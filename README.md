@@ -54,6 +54,11 @@ If you find our code is useful in your researches, please consider citing:
 
 Typically, you can run our code after installing the above two packages. Please let me know if error occurs.
 
+### Installation Using Nvidia-Docker
+
+1. Run `docker build -t <image name> .`
+1. Run `nvidia-docker run -it <image name> /bin/bash`
+
 ### Train model
 
 1. It is very simple to run the code for training model. For example, if you want to train on *USPS* dataset, you can run:
