@@ -1,5 +1,4 @@
 FROM kaixhin/cuda-torch:7.5
-MAINTAINER Sara Mousavi <mousavi@vols.utk.edu>
 
 RUN luarocks install nn
 RUN luarocks install image
